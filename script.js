@@ -1,6 +1,6 @@
 /**
  * Time Manager - Stopwatch, Timer & World Clock
- * Copyright (c) 2024 Krishan
+ * Copyright (c) 2025 Krishan
  * Licensed under the MIT License
  */
 

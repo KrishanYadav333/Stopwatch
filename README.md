@@ -50,8 +50,8 @@ Navigate between different time management tools using the bottom navigation bar
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under a Proprietary License. See the LICENSE file for details.
 
 ## Copyright
 
-Copyright (c) 2024 Krishan. All rights reserved.
+Copyright (c) 2025 Krishan. All rights reserved.
