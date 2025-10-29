@@ -31,6 +31,10 @@ A modern web-based time management application featuring a stopwatch, timer, and
 - Web Audio API for timer notifications
 - Responsive design for mobile and desktop
 
+## Live Demo
+
+🌐 **[View Live Demo](https://krishanyadav333.github.io/Stopwatch/)**
+
 ## Installation
 
 1. Clone the repository
