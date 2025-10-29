@@ -192,7 +192,7 @@ class TimeManager {
         
         // Simple wheel scroll
         let scrollAccumulator = 0;
-        const scrollThreshold = 80;
+        const scrollThreshold = 120;
         
         wheel.addEventListener('wheel', (e) => {
             if (this.timerRunning) return;
@@ -217,7 +217,7 @@ class TimeManager {
         let touchStartY = 0;
         let isDragging = false;
         let dragAccumulator = 0;
-        const dragThreshold = 50;
+        const dragThreshold = 70;
         
         wheel.addEventListener('touchstart', (e) => {
             if (this.timerRunning) return;
