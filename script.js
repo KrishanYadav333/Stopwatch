@@ -19,6 +19,8 @@ class TimeManager {
         this.setupStopwatch();
         this.setupTimer();
         this.setupWorldClock();
+        
+        // Force immediate update
         this.updateWorldClocks();
         
         // Request notification permission
@@ -350,7 +352,7 @@ class TimeManager {
         startBtn.classList.add('stop');
         
         // Show flip clock and hide scroll picker
-        document.querySelector('.flip-clock').classList.add('active');
+        document.querySelector('.flip-clock').style.display = 'flex';
         document.querySelector('.timer-controls').style.display = 'none';
         this.initializeFlipDisplay();
         
@@ -372,7 +374,7 @@ class TimeManager {
         startBtn.classList.remove('stop');
         
         // Hide flip clock and show scroll picker
-        document.querySelector('.flip-clock').classList.remove('active');
+        document.querySelector('.flip-clock').style.display = 'none';
         document.querySelector('.timer-controls').style.display = 'flex';
         
         clearInterval(this.timerInterval);
@@ -405,9 +407,9 @@ class TimeManager {
         this.stopTimer();
         
         // Visual feedback
-        const display = document.getElementById('timer-time');
-        display.style.color = '#ff4444';
-        display.style.animation = 'pulse 1s infinite';
+        const flipClock = document.querySelector('.flip-clock');
+        flipClock.style.color = '#ff4444';
+        flipClock.style.animation = 'pulse 1s infinite';
         
         // Audio notification
         this.playTimerSound();
@@ -424,7 +426,6 @@ class TimeManager {
         
         // Reset after 3 seconds
         setTimeout(() => {
-            const flipClock = document.querySelector('.flip-clock');
             flipClock.style.color = '#7BB3FF';
             flipClock.style.animation = '';
             this.resetTimer();
@@ -453,20 +454,13 @@ class TimeManager {
     }
     
     updateTimerDisplay() {
-        const display = document.getElementById('timer-time');
         const hours = Math.floor(this.timerTime / 3600);
         const minutes = Math.floor((this.timerTime % 3600) / 60);
         const seconds = this.timerTime % 60;
         
-        if (hours > 0) {
-            display.textContent = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        } else {
-            display.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // Update flip display if running
+        // Update flip display when timer is running
         if (this.timerRunning) {
-            this.updateFlipDisplay(minutes, seconds);
+            this.updateFlipDisplay(hours, minutes, seconds);
         }
     }
     
@@ -496,8 +490,7 @@ class TimeManager {
         this.setFlipValue('seconds-ones-flip', secondsOnes);
     }
     
-    updateFlipDisplay(minutes, seconds) {
-        const hours = Math.floor(this.timerTime / 3600);
+    updateFlipDisplay(hours, minutes, seconds) {
         const prevHours = Math.floor(this.previousTimerTime / 3600);
         const prevMinutes = Math.floor((this.previousTimerTime % 3600) / 60);
         const prevSeconds = this.previousTimerTime % 60;
@@ -652,6 +645,9 @@ class TimeManager {
         // Initialize the main display
         this.updateMainDisplay();
         this.updateOrangeDot();
+        
+        // Initialize current time small display
+        this.updateCurrentTimeSmall();
     }
     
     renderClockList(searchTerm = '') {
@@ -714,14 +710,27 @@ class TimeManager {
         // Set this as the new main city
         this.currentMainCity = clock;
         
-        // Update the main display
-        this.updateMainDisplay();
+        // Update the main display immediately
+        const mainCityElement = document.getElementById('main-city');
+        const mainTimeElement = document.getElementById('main-time');
+        
+        if (mainCityElement) {
+            mainCityElement.textContent = clock.city;
+        }
+        
+        if (mainTimeElement) {
+            const now = new Date();
+            const currentTime = now.toLocaleTimeString('en-US', {
+                timeZone: clock.timezone,
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            mainTimeElement.textContent = currentTime;
+        }
         
         // Update the orange dot position
         this.updateOrangeDot();
-        
-        // Update all clocks
-        this.updateWorldClocks();
         
         document.getElementById('clock-modal').classList.remove('active');
     }
@@ -736,7 +745,8 @@ class TimeManager {
         
         if (mainTimeElement) {
             try {
-                const currentTime = new Date().toLocaleTimeString('en-US', {
+                const now = new Date();
+                const currentTime = now.toLocaleTimeString('en-US', {
                     timeZone: this.currentMainCity.timezone,
                     hour12: false,
                     hour: '2-digit',
@@ -807,10 +817,13 @@ class TimeManager {
     }
     
     updateWorldClocks() {
+        // Create a single Date object for consistency
+        const now = new Date();
+        
         // Update small current time (local time)
         const currentTimeSmall = document.getElementById('current-time-small');
         if (currentTimeSmall) {
-            const currentTime = new Date().toLocaleTimeString('en-US', {
+            const currentTime = now.toLocaleTimeString('en-US', {
                 hour12: false,
                 hour: '2-digit',
                 minute: '2-digit'
@@ -830,7 +843,7 @@ class TimeManager {
             
             if (timeElement && timezone) {
                 try {
-                    const currentTime = new Date().toLocaleTimeString('en-US', {
+                    const currentTime = now.toLocaleTimeString('en-US', {
                         timeZone: timezone,
                         hour12: false,
                         hour: '2-digit',
@@ -843,6 +856,19 @@ class TimeManager {
                 }
             }
         });
+    }
+    
+    updateCurrentTimeSmall() {
+        const currentTimeSmall = document.getElementById('current-time-small');
+        if (currentTimeSmall) {
+            const now = new Date();
+            const currentTime = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            currentTimeSmall.textContent = currentTime;
+        }
     }
     
     formatTime(milliseconds, includeHundredths = false) {
@@ -861,5 +887,46 @@ class TimeManager {
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing TimeManager...');
+    
+    // Set initial time immediately
+    const mainTimeElement = document.getElementById('main-time');
+    if (mainTimeElement) {
+        const now = new Date();
+        const katmanduTime = now.toLocaleTimeString('en-US', {
+            timeZone: 'Asia/Kathmandu',
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        mainTimeElement.textContent = katmanduTime;
+        console.log('Initial Kathmandu time set:', katmanduTime);
+    }
+    
     new TimeManager();
+    
+    // Random circle pulse animation for world map (adapted from original map JS)
+    function setRandomClass() {
+        // Find the SVG in the world map background
+        const svg = document.querySelector('.world-map-background svg');
+        if (!svg) return;
+        
+        const circles = svg.querySelectorAll('circle');
+        const number = circles.length;
+        const random = Math.floor((Math.random() * number));
+        
+        // Remove previous animation class from all circles
+        circles.forEach(circle => circle.classList.remove('banaan'));
+        
+        // Add animation class to random circle
+        if (circles[random]) {
+            circles[random].classList.add('banaan');
+        }
+    }
+    
+    // Start the animation immediately and set interval
+    setRandomClass();
+    setInterval(function () {
+        setRandomClass();
+    }, 2000); // number of milliseconds (2000 = 2 seconds)
 });
