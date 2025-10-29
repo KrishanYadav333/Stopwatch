@@ -15,7 +15,7 @@ body {
 .app {
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
 }
 
 .content {
@@ -52,6 +52,7 @@ h1 {
     font-weight: 200;
     letter-spacing: -2px;
     color: #fff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.2);
 }
 
 .timer-display {
@@ -73,6 +74,11 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 10px;
+    position: absolute;
+    top: calc(50% + 150px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
 .flip-clock.active {
@@ -85,15 +91,18 @@ h1 {
 
 .flip-separator {
     font-size: 120px;
-    font-weight: 300;
-    color: #7BB3FF;
-    text-shadow: 0 0 20px rgba(123, 179, 255, 0.3);
-    margin: 0 5px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.8);
+    margin: 0 15px;
+    font-family: 'Courier New', monospace;
 }
 
 .flip-card {
-    width: 80px;
-    height: 120px;
+    width: 100px;
+    height: 140px;
     position: relative;
     perspective: 1000px;
 }
@@ -102,42 +111,49 @@ h1 {
     position: relative;
     width: 100%;
     height: 100%;
-    transition: transform 0.6s;
     transform-style: preserve-3d;
 }
 
-.flip-card.flipping .flip-card-inner {
-    transform: rotateX(180deg);
-}
+
 
 .flip-card-front,
 .flip-card-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 50%, #2a2a2a 100%);
+    border: 2px solid #333;
+    border-radius: 8px;
+    box-shadow: 
+        inset 0 2px 4px rgba(255, 255, 255, 0.1),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    border-radius: 8px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    backface-visibility: hidden;
 }
 
-.flip-card-front span,
-.flip-card-back span {
-    font-size: 72px;
-    font-weight: 300;
-    color: #7BB3FF;
-    text-shadow: 0 0 15px rgba(123, 179, 255, 0.4);
+.flip-card-front {
+    transform: rotateX(0deg);
 }
 
 .flip-card-back {
     transform: rotateX(180deg);
 }
 
-/* Flip animation variants */
+.flip-card-front span,
+.flip-card-back span {
+    font-size: 80px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.8);
+    font-family: 'Courier New', monospace;
+}
+
+/* Flip animation */
 .flip-card.flip-down .flip-card-inner {
     animation: flipDown 0.6s ease-in-out;
 }
@@ -146,11 +162,9 @@ h1 {
     0% {
         transform: rotateX(0deg);
     }
-
     50% {
         transform: rotateX(-90deg);
     }
-
     100% {
         transform: rotateX(-180deg);
     }
@@ -160,6 +174,10 @@ h1 {
     display: flex;
     justify-content: space-between;
     margin: 40px 60px;
+}
+
+#timer .controls {
+    flex-direction: row-reverse;
 }
 
 #timer .controls {
@@ -468,7 +486,7 @@ h1 {
 .main-time-display {
     position: absolute;
     bottom: 80px;
-    left: 30px;
+    left: 0px;
     z-index: 10;
 }
 
@@ -485,6 +503,7 @@ h1 {
     font-weight: 700;
     line-height: 0.9;
     letter-spacing: -4px;
+    text-shadow: 0 0 60px rgba(255, 255, 255, 0.6);
 }
 
 @keyframes pulse-dot {

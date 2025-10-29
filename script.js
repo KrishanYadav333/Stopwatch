@@ -142,14 +142,14 @@ class TimeManager {
         const startBtn = document.getElementById('timer-start');
         
         // Initialize timer values
-        this.timerHours = 5;
-        this.timerMinutes = 15;
-        this.timerSeconds = 4;
+        this.timerHours = 0;
+        this.timerMinutes = 0;
+        this.timerSeconds = 30;
         
         // Setup scroll pickers
-        this.setupScrollPicker('hours', 24, 5);
-        this.setupScrollPicker('minutes', 60, 15);
-        this.setupScrollPicker('seconds', 60, 4);
+        this.setupScrollPicker('hours', 24, 0);
+        this.setupScrollPicker('minutes', 60, 0);
+        this.setupScrollPicker('seconds', 60, 30);
         
         startBtn.addEventListener('click', () => {
             if (this.timerRunning) {
@@ -162,9 +162,13 @@ class TimeManager {
             }
         });
         
-        const cancelBtn = document.getElementById('timer-cancel');
-        cancelBtn.addEventListener('click', () => {
-            this.resetTimer();
+        const pauseBtn = document.getElementById('timer-pause');
+        pauseBtn.addEventListener('click', () => {
+            if (this.timerRunning) {
+                this.pauseTimer();
+            } else {
+                this.resumeTimer();
+            }
         });
         
         this.updateTimerPicker();
@@ -354,7 +358,31 @@ class TimeManager {
         // Show flip clock and hide scroll picker
         document.querySelector('.flip-clock').style.display = 'flex';
         document.querySelector('.timer-controls').style.display = 'none';
+        document.getElementById('timer-pause').style.display = 'block';
         this.initializeFlipDisplay();
+        
+        this.timerInterval = setInterval(() => {
+            this.previousTimerTime = this.timerTime;
+            this.timerTime--;
+            this.updateTimerDisplay();
+            
+            if (this.timerTime <= 0) {
+                this.timerComplete();
+            }
+        }, 1000);
+    }
+    
+    pauseTimer() {
+        this.timerRunning = false;
+        const pauseBtn = document.getElementById('timer-pause');
+        pauseBtn.textContent = 'Resume';
+        clearInterval(this.timerInterval);
+    }
+    
+    resumeTimer() {
+        this.timerRunning = true;
+        const pauseBtn = document.getElementById('timer-pause');
+        pauseBtn.textContent = 'Pause';
         
         this.timerInterval = setInterval(() => {
             this.previousTimerTime = this.timerTime;
@@ -370,27 +398,30 @@ class TimeManager {
     stopTimer() {
         this.timerRunning = false;
         const startBtn = document.getElementById('timer-start');
+        const pauseBtn = document.getElementById('timer-pause');
         startBtn.textContent = 'Start';
         startBtn.classList.remove('stop');
+        pauseBtn.textContent = 'Pause';
         
         // Hide flip clock and show scroll picker
         document.querySelector('.flip-clock').style.display = 'none';
         document.querySelector('.timer-controls').style.display = 'flex';
+        document.getElementById('timer-pause').style.display = 'none';
         
         clearInterval(this.timerInterval);
     }
     
     resetTimer() {
         this.stopTimer();
-        this.timerHours = 5;
-        this.timerMinutes = 15;
-        this.timerSeconds = 4;
+        this.timerHours = 0;
+        this.timerMinutes = 0;
+        this.timerSeconds = 30;
         this.timerTime = this.timerHours * 3600 + this.timerMinutes * 60 + this.timerSeconds;
         
         // Reset picker positions
-        this.selectPickerValue('hours', 5);
-        this.selectPickerValue('minutes', 15);
-        this.selectPickerValue('seconds', 4);
+        this.selectPickerValue('hours', 0);
+        this.selectPickerValue('minutes', 0);
+        this.selectPickerValue('seconds', 30);
         
         this.updateTimerDisplay();
         this.updateTimerPicker();
@@ -554,10 +585,6 @@ class TimeManager {
         setTimeout(() => {
             front.textContent = newValue;
             card.classList.remove('flip-down');
-            
-            // Reset the card position
-            const inner = card.querySelector('.flip-card-inner');
-            inner.style.transform = 'rotateX(0deg)';
         }, 600);
     }
     

@@ -10,15 +10,15 @@
     <div class="app">
         <nav class="bottom-nav">
             <button class="nav-btn active" data-tab="stopwatch">
-                <span class="icon">SW</span>
+                <span class="icon">⏱</span>
                 <span>Stopwatch</span>
             </button>
             <button class="nav-btn" data-tab="timer">
-                <span class="icon">TM</span>
+                <span class="icon">⏲</span>
                 <span>Timer</span>
             </button>
             <button class="nav-btn" data-tab="worldclock">
-                <span class="icon">WC</span>
+                <span class="icon">◐</span>
                 <span>World Clock</span>
             </button>
         </nav>
@@ -49,7 +49,7 @@
                 <h1>Timer</h1>
                 <div class="timer-display">
                     <div class="simple-display" style="display: none;">
-                        <div id="timer-time">5:15:04</div>
+                        <div id="timer-time">0:00:30</div>
                     </div>
                     <div class="flip-clock" style="display: none;">
                         <div class="flip-unit hours" id="hours-flip-unit" style="display: none;">
@@ -125,22 +125,22 @@
                         </div>
                         <div class="selection-display">
                             <div class="selection-item">
-                                <span id="selected-hours">5</span>
+                                <span id="selected-hours">0</span>
                                 <span class="unit-label">hours</span>
                             </div>
                             <div class="selection-item">
-                                <span id="selected-minutes">15</span>
+                                <span id="selected-minutes">0</span>
                                 <span class="unit-label">min</span>
                             </div>
                             <div class="selection-item">
-                                <span id="selected-seconds">4</span>
+                                <span id="selected-seconds">30</span>
                                 <span class="unit-label">sec</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="controls">
-                    <button class="control-btn cancel-btn" id="timer-cancel">Cancel</button>
+                    <button class="control-btn cancel-btn" id="timer-pause" style="display: none;">Pause</button>
                     <button class="control-btn start-btn" id="timer-start">Start</button>
                 </div>
             </div>
