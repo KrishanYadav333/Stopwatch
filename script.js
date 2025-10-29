@@ -575,31 +575,52 @@ class TimeManager {
         const searchInput = document.getElementById('clock-search');
         const clockList = document.getElementById('clock-list');
         
-        // Available timezones with city names
+        // Current main display city (default to Kathmandu)
+        this.currentMainCity = { city: 'Kathmandu', timezone: 'Asia/Kathmandu', country: 'Nepal', position: { left: '72%', top: '38%' } };
+        
+        // Available timezones with city names and map positions
         this.availableClocks = [
-            { city: 'New York', timezone: 'America/New_York', country: 'USA' },
-            { city: 'Los Angeles', timezone: 'America/Los_Angeles', country: 'USA' },
-            { city: 'Chicago', timezone: 'America/Chicago', country: 'USA' },
-            { city: 'London', timezone: 'Europe/London', country: 'UK' },
-            { city: 'Paris', timezone: 'Europe/Paris', country: 'France' },
-            { city: 'Berlin', timezone: 'Europe/Berlin', country: 'Germany' },
-            { city: 'Rome', timezone: 'Europe/Rome', country: 'Italy' },
-            { city: 'Madrid', timezone: 'Europe/Madrid', country: 'Spain' },
-            { city: 'Moscow', timezone: 'Europe/Moscow', country: 'Russia' },
-            { city: 'Tokyo', timezone: 'Asia/Tokyo', country: 'Japan' },
-            { city: 'Seoul', timezone: 'Asia/Seoul', country: 'South Korea' },
-            { city: 'Beijing', timezone: 'Asia/Shanghai', country: 'China' },
-            { city: 'Hong Kong', timezone: 'Asia/Hong_Kong', country: 'Hong Kong' },
-            { city: 'Singapore', timezone: 'Asia/Singapore', country: 'Singapore' },
-            { city: 'Mumbai', timezone: 'Asia/Kolkata', country: 'India' },
-            { city: 'Dubai', timezone: 'Asia/Dubai', country: 'UAE' },
-            { city: 'Sydney', timezone: 'Australia/Sydney', country: 'Australia' },
-            { city: 'Melbourne', timezone: 'Australia/Melbourne', country: 'Australia' },
-            { city: 'Auckland', timezone: 'Pacific/Auckland', country: 'New Zealand' },
-            { city: 'São Paulo', timezone: 'America/Sao_Paulo', country: 'Brazil' },
-            { city: 'Mexico City', timezone: 'America/Mexico_City', country: 'Mexico' },
-            { city: 'Toronto', timezone: 'America/Toronto', country: 'Canada' },
-            { city: 'Vancouver', timezone: 'America/Vancouver', country: 'Canada' }
+            { city: 'New York', timezone: 'America/New_York', country: 'USA', position: { left: '25%', top: '35%' } },
+            { city: 'Los Angeles', timezone: 'America/Los_Angeles', country: 'USA', position: { left: '15%', top: '40%' } },
+            { city: 'Chicago', timezone: 'America/Chicago', country: 'USA', position: { left: '22%', top: '38%' } },
+            { city: 'Denver', timezone: 'America/Denver', country: 'USA', position: { left: '20%', top: '42%' } },
+            { city: 'Phoenix', timezone: 'America/Phoenix', country: 'USA', position: { left: '18%', top: '45%' } },
+            { city: 'London', timezone: 'Europe/London', country: 'UK', position: { left: '50%', top: '30%' } },
+            { city: 'Paris', timezone: 'Europe/Paris', country: 'France', position: { left: '52%', top: '32%' } },
+            { city: 'Berlin', timezone: 'Europe/Berlin', country: 'Germany', position: { left: '54%', top: '30%' } },
+            { city: 'Rome', timezone: 'Europe/Rome', country: 'Italy', position: { left: '54%', top: '35%' } },
+            { city: 'Madrid', timezone: 'Europe/Madrid', country: 'Spain', position: { left: '48%', top: '35%' } },
+            { city: 'Amsterdam', timezone: 'Europe/Amsterdam', country: 'Netherlands', position: { left: '52%', top: '29%' } },
+            { city: 'Stockholm', timezone: 'Europe/Stockholm', country: 'Sweden', position: { left: '56%', top: '25%' } },
+            { city: 'Moscow', timezone: 'Europe/Moscow', country: 'Russia', position: { left: '62%', top: '28%' } },
+            { city: 'Istanbul', timezone: 'Europe/Istanbul', country: 'Turkey', position: { left: '58%', top: '35%' } },
+            { city: 'Tokyo', timezone: 'Asia/Tokyo', country: 'Japan', position: { left: '85%', top: '40%' } },
+            { city: 'Seoul', timezone: 'Asia/Seoul', country: 'South Korea', position: { left: '83%', top: '38%' } },
+            { city: 'Beijing', timezone: 'Asia/Shanghai', country: 'China', position: { left: '78%', top: '35%' } },
+            { city: 'Shanghai', timezone: 'Asia/Shanghai', country: 'China', position: { left: '80%', top: '37%' } },
+            { city: 'Hong Kong', timezone: 'Asia/Hong_Kong', country: 'Hong Kong', position: { left: '78%', top: '42%' } },
+            { city: 'Singapore', timezone: 'Asia/Singapore', country: 'Singapore', position: { left: '75%', top: '52%' } },
+            { city: 'Bangkok', timezone: 'Asia/Bangkok', country: 'Thailand', position: { left: '74%', top: '45%' } },
+            { city: 'Mumbai', timezone: 'Asia/Kolkata', country: 'India', position: { left: '68%', top: '42%' } },
+            { city: 'Delhi', timezone: 'Asia/Kolkata', country: 'India', position: { left: '69%', top: '38%' } },
+            { city: 'Kathmandu', timezone: 'Asia/Kathmandu', country: 'Nepal', position: { left: '72%', top: '38%' } },
+            { city: 'Dubai', timezone: 'Asia/Dubai', country: 'UAE', position: { left: '64%', top: '42%' } },
+            { city: 'Tel Aviv', timezone: 'Asia/Jerusalem', country: 'Israel', position: { left: '60%', top: '37%' } },
+            { city: 'Sydney', timezone: 'Australia/Sydney', country: 'Australia', position: { left: '88%', top: '70%' } },
+            { city: 'Melbourne', timezone: 'Australia/Melbourne', country: 'Australia', position: { left: '86%', top: '72%' } },
+            { city: 'Perth', timezone: 'Australia/Perth', country: 'Australia', position: { left: '78%', top: '68%' } },
+            { city: 'Auckland', timezone: 'Pacific/Auckland', country: 'New Zealand', position: { left: '92%', top: '75%' } },
+            { city: 'São Paulo', timezone: 'America/Sao_Paulo', country: 'Brazil', position: { left: '32%', top: '65%' } },
+            { city: 'Rio de Janeiro', timezone: 'America/Sao_Paulo', country: 'Brazil', position: { left: '34%', top: '63%' } },
+            { city: 'Buenos Aires', timezone: 'America/Argentina/Buenos_Aires', country: 'Argentina', position: { left: '30%', top: '70%' } },
+            { city: 'Mexico City', timezone: 'America/Mexico_City', country: 'Mexico', position: { left: '20%', top: '48%' } },
+            { city: 'Toronto', timezone: 'America/Toronto', country: 'Canada', position: { left: '26%', top: '32%' } },
+            { city: 'Vancouver', timezone: 'America/Vancouver', country: 'Canada', position: { left: '18%', top: '30%' } },
+            { city: 'Montreal', timezone: 'America/Toronto', country: 'Canada', position: { left: '28%', top: '32%' } },
+            { city: 'Cairo', timezone: 'Africa/Cairo', country: 'Egypt', position: { left: '58%', top: '45%' } },
+            { city: 'Lagos', timezone: 'Africa/Lagos', country: 'Nigeria', position: { left: '52%', top: '52%' } },
+            { city: 'Johannesburg', timezone: 'Africa/Johannesburg', country: 'South Africa', position: { left: '58%', top: '65%' } },
+            { city: 'Nairobi', timezone: 'Africa/Nairobi', country: 'Kenya', position: { left: '62%', top: '52%' } }
         ];
         
         addClockBtn.addEventListener('click', () => {
@@ -624,11 +645,18 @@ class TimeManager {
         
         // Setup remove clock functionality
         this.setupRemoveClocks();
+        
+        // Setup timezone dot clicks
+        this.setupTimezoneDots();
+        
+        // Initialize the main display
+        this.updateMainDisplay();
+        this.updateOrangeDot();
     }
     
     renderClockList(searchTerm = '') {
         const clockList = document.getElementById('clock-list');
-        const existingTimezones = Array.from(document.querySelectorAll('.clock-item')).map(item => item.dataset.timezone);
+        const existingTimezones = Array.from(document.querySelectorAll('.additional-clock-item')).map(item => item.dataset.timezone);
         
         const filteredClocks = this.availableClocks.filter(clock => {
             const matchesSearch = clock.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -639,28 +667,43 @@ class TimeManager {
         
         clockList.innerHTML = '';
         
+        if (filteredClocks.length === 0) {
+            clockList.innerHTML = '<div class="no-results">No cities found</div>';
+            return;
+        }
+        
         filteredClocks.forEach(clock => {
             const clockOption = document.createElement('div');
             clockOption.className = 'clock-option';
             
-            const currentTime = new Date().toLocaleTimeString('en-US', {
-                timeZone: clock.timezone,
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
-            clockOption.innerHTML = `
-                <div class="clock-option-info">
-                    <div class="clock-option-city">${clock.city}</div>
-                    <div class="clock-option-timezone">${clock.country}</div>
-                </div>
-                <div class="clock-option-time">${currentTime}</div>
-            `;
+            try {
+                const currentTime = new Date().toLocaleTimeString('en-US', {
+                    timeZone: clock.timezone,
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                clockOption.innerHTML = `
+                    <div class="clock-option-info">
+                        <div class="clock-option-city">${clock.city}</div>
+                        <div class="clock-option-timezone">${clock.country} • Click to set as main</div>
+                    </div>
+                    <div class="clock-option-time">${currentTime}</div>
+                `;
+            } catch (error) {
+                console.error(`Error getting time for ${clock.city}:`, error);
+                clockOption.innerHTML = `
+                    <div class="clock-option-info">
+                        <div class="clock-option-city">${clock.city}</div>
+                        <div class="clock-option-timezone">${clock.country} • Click to set as main</div>
+                    </div>
+                    <div class="clock-option-time">--:--</div>
+                `;
+            }
             
             clockOption.addEventListener('click', () => {
                 this.addClock(clock);
-                document.getElementById('clock-modal').classList.remove('active');
             });
             
             clockList.appendChild(clockOption);
@@ -668,23 +711,85 @@ class TimeManager {
     }
     
     addClock(clock) {
-        const worldClocks = document.getElementById('world-clocks');
+        // Set this as the new main city
+        this.currentMainCity = clock;
         
-        const clockItem = document.createElement('div');
-        clockItem.className = 'clock-item';
-        clockItem.dataset.timezone = clock.timezone;
+        // Update the main display
+        this.updateMainDisplay();
         
-        clockItem.innerHTML = `
-            <div class="clock-info">
-                <div class="city-name">${clock.city}</div>
-                <div class="clock-time"></div>
-            </div>
-            <button class="remove-clock-btn">×</button>
-        `;
+        // Update the orange dot position
+        this.updateOrangeDot();
         
-        worldClocks.appendChild(clockItem);
-        this.setupRemoveClocks();
+        // Update all clocks
         this.updateWorldClocks();
+        
+        document.getElementById('clock-modal').classList.remove('active');
+    }
+    
+    updateMainDisplay() {
+        const mainCityElement = document.getElementById('main-city');
+        const mainTimeElement = document.getElementById('main-time');
+        
+        if (mainCityElement) {
+            mainCityElement.textContent = this.currentMainCity.city;
+        }
+        
+        if (mainTimeElement) {
+            try {
+                const currentTime = new Date().toLocaleTimeString('en-US', {
+                    timeZone: this.currentMainCity.timezone,
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                mainTimeElement.textContent = currentTime;
+            } catch (error) {
+                console.error(`Error getting time for ${this.currentMainCity.city}:`, error);
+                mainTimeElement.textContent = '--:--';
+            }
+        }
+    }
+    
+    updateOrangeDot() {
+        // Remove existing active dot
+        const existingActiveDot = document.querySelector('.timezone-dot.active');
+        if (existingActiveDot) {
+            existingActiveDot.classList.remove('active');
+        }
+        
+        // Find or create the dot for current main city
+        let activeDot = document.querySelector(`[data-timezone="${this.currentMainCity.timezone}"]`);
+        
+        if (!activeDot) {
+            // Create new dot if it doesn't exist
+            activeDot = document.createElement('div');
+            activeDot.className = 'timezone-dot';
+            activeDot.dataset.timezone = this.currentMainCity.timezone;
+            activeDot.style.left = this.currentMainCity.position.left;
+            activeDot.style.top = this.currentMainCity.position.top;
+            document.querySelector('.dotted-world-map').appendChild(activeDot);
+        }
+        
+        // Make this dot active (highlighted)
+        activeDot.classList.add('active');
+    }
+    
+    setupTimezoneDots() {
+        // Use event delegation to handle clicks on all timezone dots (existing and future)
+        const worldMap = document.querySelector('.dotted-world-map');
+        
+        worldMap.addEventListener('click', (e) => {
+            if (e.target.classList.contains('timezone-dot')) {
+                const timezone = e.target.dataset.timezone;
+                const clockData = this.availableClocks.find(clock => clock.timezone === timezone);
+                
+                if (clockData) {
+                    this.currentMainCity = clockData;
+                    this.updateMainDisplay();
+                    this.updateOrangeDot();
+                }
+            }
+        });
     }
     
     setupRemoveClocks() {
@@ -702,21 +807,40 @@ class TimeManager {
     }
     
     updateWorldClocks() {
-        const clockItems = document.querySelectorAll('.clock-item');
+        // Update small current time (local time)
+        const currentTimeSmall = document.getElementById('current-time-small');
+        if (currentTimeSmall) {
+            const currentTime = new Date().toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            currentTimeSmall.textContent = currentTime;
+        }
         
-        clockItems.forEach(item => {
-            const timezone = item.dataset.timezone;
-            const timeElement = item.querySelector('.clock-time');
+        // Update main time display (current selected city)
+        this.updateMainDisplay();
+        
+        // Update additional clocks
+        const additionalClockItems = document.querySelectorAll('.additional-clock-item');
+        
+        additionalClockItems.forEach(clockItem => {
+            const timezone = clockItem.dataset.timezone;
+            const timeElement = clockItem.querySelector('.additional-clock-time');
             
-            if (timezone && timeElement) {
-                const time = new Date().toLocaleTimeString('en-US', {
-                    timeZone: timezone,
-                    hour12: false,
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-                timeElement.textContent = time;
+            if (timeElement && timezone) {
+                try {
+                    const currentTime = new Date().toLocaleTimeString('en-US', {
+                        timeZone: timezone,
+                        hour12: false,
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    timeElement.textContent = currentTime;
+                } catch (error) {
+                    console.error(`Error updating time for timezone ${timezone}:`, error);
+                    timeElement.textContent = '--:--';
+                }
             }
         });
     }

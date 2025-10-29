@@ -144,45 +144,58 @@
 
             <!-- World Clock Tab -->
             <div class="tab-content" id="worldclock">
-                <h1>World Clock</h1>
-                <div class="add-clock-section">
-                    <button class="add-clock-btn" id="add-clock-btn">+ Add Clock</button>
+                <div class="world-clock-display">
+                    <div class="current-location">
+                        <div class="location-icon">📍</div>
+                        <div class="current-time-small" id="current-time-small"></div>
+                    </div>
+                    
+                    <div class="add-clock-btn-container">
+                        <button class="add-clock-btn" id="add-clock-btn">+ Add Clock</button>
+                    </div>
+                    
+                    <div class="world-map-background">
+                        <div class="dotted-world-map">
+                            <!-- Dotted world map pattern -->
+                            <div class="continent north-america"></div>
+                            <div class="continent south-america"></div>
+                            <div class="continent europe"></div>
+                            <div class="continent africa"></div>
+                            <div class="continent asia"></div>
+                            <div class="continent australia"></div>
+                            
+                            <!-- Timezone markers -->
+                            <div class="timezone-dot" data-timezone="America/New_York" style="left: 25%; top: 35%;" title="New York"></div>
+                            <div class="timezone-dot" data-timezone="Europe/London" style="left: 50%; top: 30%;" title="London"></div>
+                            <div class="timezone-dot" data-timezone="Asia/Tokyo" style="left: 85%; top: 40%;" title="Tokyo"></div>
+                            <div class="timezone-dot" data-timezone="Australia/Sydney" style="left: 88%; top: 70%;" title="Sydney"></div>
+                            <div class="timezone-dot active" data-timezone="Asia/Kathmandu" style="left: 72%; top: 38%;" title="Kathmandu"></div>
+                        </div>
+                        
+                        <div class="main-time-display">
+                            <div class="main-city" id="main-city">Kathmandu</div>
+                            <div class="main-time" id="main-time"></div>
+                        </div>
+                        
+                        <div class="additional-clocks" id="additional-clocks">
+                            <!-- Additional clocks will be added here -->
+                        </div>
+                    </div>
                 </div>
-                <div class="world-clocks" id="world-clocks">
-                    <div class="clock-item" data-timezone="America/New_York">
-                        <div class="clock-info">
-                            <div class="city-name">New York</div>
-                            <div class="clock-time"></div>
-                        </div>
-                        <button class="remove-clock-btn">×</button>
+            </div>
+
+            <!-- Clock Modal -->
+            <div class="modal" id="clock-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Add Clock</h2>
+                        <button class="close-btn" id="close-modal">×</button>
                     </div>
-                    <div class="clock-item" data-timezone="Europe/London">
-                        <div class="clock-info">
-                            <div class="city-name">London</div>
-                            <div class="clock-time"></div>
-                        </div>
-                        <button class="remove-clock-btn">×</button>
+                    <div class="clock-search">
+                        <input type="text" id="clock-search" placeholder="Search for a city or country...">
                     </div>
-                    <div class="clock-item" data-timezone="Asia/Tokyo">
-                        <div class="clock-info">
-                            <div class="city-name">Tokyo</div>
-                            <div class="clock-time"></div>
-                        </div>
-                        <button class="remove-clock-btn">×</button>
-                    </div>
-                </div>
-                
-                <!-- Clock Selection Modal -->
-                <div class="modal" id="clock-modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2>Add World Clock</h2>
-                            <button class="close-btn" id="close-modal">×</button>
-                        </div>
-                        <div class="clock-search">
-                            <input type="text" id="clock-search" placeholder="Search cities...">
-                        </div>
-                        <div class="clock-list" id="clock-list"></div>
+                    <div class="clock-list" id="clock-list">
+                        <!-- Clock options will be populated here -->
                     </div>
                 </div>
             </div>
