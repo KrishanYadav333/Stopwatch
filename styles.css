@@ -729,6 +729,7 @@ h1 {
     background: #111;
     border-top: 1px solid #333;
     padding: 10px 0;
+    transform: translateY(6px);
 }
 
 .nav-btn {
@@ -830,4 +831,30 @@ h1 {
     to {
         r: 5;
     }
+}
+
+/* Copyright Footer */
+.copyright-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(17, 17, 17, 0.95);
+    border-top: 1px solid #333;
+    padding: 8px 20px;
+    text-align: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.copyright-footer p {
+    margin: 0;
+    font-size: 12px;
+    color: #888;
+    font-weight: 400;
+}
+
+/* Adjust app padding to account for footer */
+.app {
+    padding-bottom: 40px;
 }

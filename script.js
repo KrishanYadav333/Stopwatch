@@ -1,3 +1,9 @@
+/**
+ * Time Manager - Stopwatch, Timer & World Clock
+ * Copyright (c) 2024 Krishan
+ * Licensed under the MIT License
+ */
+
 class TimeManager {
     constructor() {
         this.stopwatchTime = 0;
@@ -12,6 +18,7 @@ class TimeManager {
         this.previousTimerTime = 0;
         
         this.init();
+        this.updateCopyright();
     }
     
     init() {
@@ -908,6 +915,19 @@ class TimeManager {
             return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
         } else {
             return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }
+    
+    updateCopyright() {
+        const currentYear = new Date().getFullYear();
+        const copyrightElement = document.getElementById('copyright-year');
+        const footerCopyrightElement = document.getElementById('footer-copyright-year');
+        
+        if (copyrightElement) {
+            copyrightElement.textContent = currentYear;
+        }
+        if (footerCopyrightElement) {
+            footerCopyrightElement.textContent = currentYear;
         }
     }
 }
