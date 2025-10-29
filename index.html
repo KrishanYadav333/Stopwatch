@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-tab="stopwatch">
+                <span class="icon">SW</span>
+                <span>Stopwatch</span>
+            </button>
+            <button class="nav-btn" data-tab="timer">
+                <span class="icon">TM</span>
+                <span>Timer</span>
+            </button>
+            <button class="nav-btn" data-tab="worldclock">
+                <span class="icon">WC</span>
+                <span>World Clock</span>
+            </button>
+        </nav>
+
+        <div class="content">
+            <!-- Stopwatch Tab -->
+            <div class="tab-content active" id="stopwatch">
+                <h1>Stopwatch</h1>
+                <div class="time-display">
+                    <span id="stopwatch-time">00:00.00</span>
+                </div>
+                <div class="controls">
+                    <button class="control-btn reset-btn" id="stopwatch-reset">Reset</button>
+                    <button class="control-btn start-btn" id="stopwatch-start">Start</button>
+                </div>
+                <div class="laps-section">
+                    <div class="laps-header">
+                        <span>LAP NO.</span>
+                        <span>SPLIT</span>
+                        <span>TOTAL</span>
+                    </div>
+                    <div class="laps-list" id="laps-list"></div>
+                </div>
+            </div>
+
+            <!-- Timer Tab -->
+            <div class="tab-content" id="timer">
+                <h1>Timer</h1>
+                <div class="timer-display">
+                    <div class="flip-clock" style="display: none;">
+                        <div class="flip-unit hours" id="hours-flip-unit" style="display: none;">
+                            <div class="flip-card" id="hours-flip">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span>0</span>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <span>0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flip-separator hours-sep" id="hours-separator" style="display: none;">:</div>
+                        <div class="flip-unit minutes">
+                            <div class="flip-card" id="minutes-flip">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span>0</span>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <span>0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flip-separator">:</div>
+                        <div class="flip-unit seconds-tens">
+                            <div class="flip-card" id="seconds-tens-flip">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span>5</span>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <span>5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flip-unit seconds-ones">
+                            <div class="flip-card" id="seconds-ones-flip">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span>9</span>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <span>9</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="timer-controls">
+                    <div class="circular-picker">
+                        <div class="picker-wheel-container">
+                            <div class="picker-column">
+                                <div class="picker-wheel" id="hours-wheel">
+                                    <div class="picker-options" id="hours-options"></div>
+                                </div>
+                            </div>
+                            <div class="picker-column">
+                                <div class="picker-wheel" id="minutes-wheel">
+                                    <div class="picker-options" id="minutes-options"></div>
+                                </div>
+                            </div>
+                            <div class="picker-column">
+                                <div class="picker-wheel" id="seconds-wheel">
+                                    <div class="picker-options" id="seconds-options"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selection-display">
+                            <div class="selection-item">
+                                <span id="selected-hours">5</span>
+                                <span class="unit-label">hours</span>
+                            </div>
+                            <div class="selection-item">
+                                <span id="selected-minutes">15</span>
+                                <span class="unit-label">min</span>
+                            </div>
+                            <div class="selection-item">
+                                <span id="selected-seconds">4</span>
+                                <span class="unit-label">sec</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn cancel-btn" id="timer-cancel">Cancel</button>
+                    <button class="control-btn start-btn" id="timer-start">Start</button>
+                </div>
+            </div>
+
+            <!-- World Clock Tab -->
+            <div class="tab-content" id="worldclock">
+                <h1>World Clock</h1>
+                <div class="add-clock-section">
+                    <button class="add-clock-btn" id="add-clock-btn">+ Add Clock</button>
+                </div>
+                <div class="world-clocks" id="world-clocks">
+                    <div class="clock-item" data-timezone="America/New_York">
+                        <div class="clock-info">
+                            <div class="city-name">New York</div>
+                            <div class="clock-time"></div>
+                        </div>
+                        <button class="remove-clock-btn">×</button>
+                    </div>
+                    <div class="clock-item" data-timezone="Europe/London">
+                        <div class="clock-info">
+                            <div class="city-name">London</div>
+                            <div class="clock-time"></div>
+                        </div>
+                        <button class="remove-clock-btn">×</button>
+                    </div>
+                    <div class="clock-item" data-timezone="Asia/Tokyo">
+                        <div class="clock-info">
+                            <div class="city-name">Tokyo</div>
+                            <div class="clock-time"></div>
+                        </div>
+                        <button class="remove-clock-btn">×</button>
+                    </div>
+                </div>
+                
+                <!-- Clock Selection Modal -->
+                <div class="modal" id="clock-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Add World Clock</h2>
+                            <button class="close-btn" id="close-modal">×</button>
+                        </div>
+                        <div class="clock-search">
+                            <input type="text" id="clock-search" placeholder="Search cities...">
+                        </div>
+                        <div class="clock-list" id="clock-list"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
